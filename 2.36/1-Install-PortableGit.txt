@@ -1,0 +1,38 @@
+Installation
+------------
+
+*NOTE*: if you decide to unpack the archive using 7-Zip manually, you must
+run the `post-install.bat` script. Git will not run correctly otherwise.
+
+
+
+
+How to start using PortableGit
+------------------------------
+
+If you are comfortable with a Unix-like shell, just launch 'git-bash.exe'.
+If not, just launch 'git-cmd.exe'.
+
+In addition, if you set the HOME environment variable (either permanently or
+for the current session only) you can make Git store and  use the configuration
+files in the directory specified in that variable. And if you specify
+--cd-to-home, git-bash and git-cmd will use that as the working directory when
+launched, too. For example:
+
+        set HOME=%cd%/home
+        git --cd-to-home
+will use the relative directory named home (%cd% specifies the current directory).
+
+
+
+
+Quick start
+-----------
+
+Start configuring git with your personal settings:
+        git config --global user.name "Joe Sixpack"
+        git config --global user.email joe.sixpack@g_mail.com
+        git config --global --list
+
+Start using git:
+        git --help

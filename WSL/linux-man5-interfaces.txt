@@ -1,0 +1,37 @@
+interfaces (5) - Linux Man Pages
+https://www.systutorials.com/docs/linux/man/5-interfaces/
+
+interfaces: network interface configuration for ifup and ifdown
+Command to display interfaces manual in Linux: $ man 5 interfaces
+
+NAME
+/etc/network/interfaces - network interface configuration for ifup and ifdown
+
+DESCRIPTION
+/etc/network/interfaces contains network interface configuration information for the ifup(8) and ifdown(8) commands. This is where you configure how your system is connected to the network.
+
+
+EXAMPLE
+FILE FORMAT
+INTERFACE SELECTION
+INTERFACE RENAMING
+INCLUDING OTHER FILES
+MAPPINGS
+INTERFACE DEFINITIONS
+INTERFACE TEMPLATES
+PATTERN MATCHING INTERFACES
+VLAN INTERFACES
+IFACE OPTIONS
+HOOK SCRIPTS
+--!!--
+ENVIRONMENT VARIABLES
+CONCURRENCY AND PARALLEL EXECUTION
+OPTIONS PROVIDED BY OTHER PACKAGES
+INET ADDRESS FAMILY
+IPX ADDRESS FAMILY
+INET6 ADDRESS FAMILY
+CAN ADDRESS FAMILY
+KNOWN BUGS/LIMITATIONS
+
+AUTHOR
+The ifupdown suite was written by Anthony Towns <aj [at] azure.humbug.org.au>. This manpage was contributed by Joey Hess <joey [at] kitenet.net>.

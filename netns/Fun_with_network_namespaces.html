@@ -1,0 +1,1300 @@
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width">
+
+        <link rel="alternate" type="application/rss+xml" title="Giles Thomas" href="/feed/rss.xml" />
+        <link rel="stylesheet" href="/styles/base.css">
+        <link rel="stylesheet" href="/styles/monokai.css">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
+        <link rel="manifest" href="/images/favicons/site.webmanifest">
+
+        <title>Fun with network namespaces, part 1 :: Giles' blog</title>
+
+        
+    <script>
+        var blogPath = window.location.pathname;
+        if (blogPath.endsWith("index.html")) {
+            blogPath = blogPath.slice(0, -10);
+        }
+        if (blogPath.endsWith("/")) {
+            blogPath = blogPath.slice(0, -1);
+        }
+        blogPath = `https://www.gilesthomas.com${blogPath}`;
+        const commentsURL = "https://comments.gilesthomas.com/comments?post_url=" + blogPath;
+        fetch(
+            commentsURL
+        ).then(function (response) {
+            response.text().then(function (text) {
+                document.getElementById("comments").innerHTML = text;
+            });
+        })
+    </script>
+
+    </head>
+
+    <body>
+        <div class="content">
+            <div class="site-header">
+                <a href="/">Giles' blog</a>
+
+                <div class="links">
+                    <a href="https://twitter.com/gpjt"><img src="/images/twitter-icon.png" alt="Me on Twitter" title="Me on Twitter"/></a>
+                    <a href="https://github.com/gpjt"><img src="/images/github-icon.png" alt="My GitHub Profile" title="My GitHub Profile"/></a>
+                    <a href="/feed/rss.xml"><img src="/images/rss-icon.png" alt="RSS feed for this blog" title="RSS feed for this blog"/></a>
+                </div>
+            </div>
+
+            <div class="links-bar">
+                <div class="links-bar-link dropdown">
+                    <a href="/2021/02/about/">About</a>
+                </div><div class="links-bar-link dropdown">
+                    <span class="dropdown-header">Archives</span>
+                    <div class="dropdown-content">
+                        <ul>
+                            
+                                <li>
+                                    <a href="/2022/02">
+                                        February 2022 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2021/11">
+                                        November 2021 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2021/03">
+                                        March 2021 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2021/02">
+                                        February 2021 (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2019/08">
+                                        August 2019 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2018/11">
+                                        November 2018 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2017/05">
+                                        May 2017 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2016/12">
+                                        December 2016 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2016/04">
+                                        April 2016 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2015/08">
+                                        August 2015 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2014/12">
+                                        December 2014 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2014/08">
+                                        August 2014 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2014/03">
+                                        March 2014 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2013/12">
+                                        December 2013 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2013/10">
+                                        October 2013 (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2013/09">
+                                        September 2013 (4)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2013/08">
+                                        August 2013 (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2013/07">
+                                        July 2013 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2013/06">
+                                        June 2013 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2013/02">
+                                        February 2013 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2012/10">
+                                        October 2012 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2012/06">
+                                        June 2012 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2012/05">
+                                        May 2012 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2012/04">
+                                        April 2012 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2012/02">
+                                        February 2012 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2011/10">
+                                        October 2011 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2011/06">
+                                        June 2011 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2011/05">
+                                        May 2011 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2011/04">
+                                        April 2011 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2011/03">
+                                        March 2011 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2011/02">
+                                        February 2011 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2011/01">
+                                        January 2011 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2010/12">
+                                        December 2010 (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2010/11">
+                                        November 2010 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2010/10">
+                                        October 2010 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2010/09">
+                                        September 2010 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2010/08">
+                                        August 2010 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2010/07">
+                                        July 2010 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2010/05">
+                                        May 2010 (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2010/04">
+                                        April 2010 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2010/03">
+                                        March 2010 (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2010/02">
+                                        February 2010 (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2010/01">
+                                        January 2010 (4)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2009/12">
+                                        December 2009 (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2009/11">
+                                        November 2009 (5)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2009/10">
+                                        October 2009 (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2009/09">
+                                        September 2009 (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2009/08">
+                                        August 2009 (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2009/07">
+                                        July 2009 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2009/05">
+                                        May 2009 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2009/04">
+                                        April 2009 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2009/03">
+                                        March 2009 (5)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2009/02">
+                                        February 2009 (5)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2009/01">
+                                        January 2009 (5)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2008/12">
+                                        December 2008 (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2008/11">
+                                        November 2008 (7)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2008/10">
+                                        October 2008 (4)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2008/09">
+                                        September 2008 (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2008/08">
+                                        August 2008 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2008/07">
+                                        July 2008 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2008/06">
+                                        June 2008 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2008/05">
+                                        May 2008 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2008/04">
+                                        April 2008 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2008/01">
+                                        January 2008 (5)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2007/12">
+                                        December 2007 (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2007/03">
+                                        March 2007 (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2007/02">
+                                        February 2007 (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2007/01">
+                                        January 2007 (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2006/12">
+                                        December 2006 (4)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/2006/11">
+                                        November 2006 (18)
+                                    </a>
+                                </li>
+                            
+                        </ul>
+                    </div>
+                </div><div class="links-bar-link dropdown">
+                    <span class="dropdown-header">Categories</span>
+                    <div class="dropdown-content">
+                        <ul>
+                            
+                                <li>
+                                    <a href="/3d">
+                                        3D (5)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/admin">
+                                        Admin (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/blogging">
+                                        Blogging (5)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/business-of-software">
+                                        Business of Software (8)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/copyright">
+                                        Copyright (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/dirigible">
+                                        Dirigible (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/django">
+                                        Django (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/eee">
+                                        Eee (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/finance">
+                                        Finance (6)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/funny">
+                                        Funny (11)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/gpu-computing">
+                                        GPU Computing (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/gadgets">
+                                        Gadgets (8)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/javascript">
+                                        JavaScript (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/linux">
+                                        Linux (13)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/memes">
+                                        Memes (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/meta">
+                                        Meta (7)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/music">
+                                        Music (4)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/nslu2-offsite-backup-project">
+                                        NSLU2 offsite backup project (13)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/olpc-xo">
+                                        OLPC XO (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/oddities">
+                                        Oddities (4)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/personal">
+                                        Personal (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/politics">
+                                        Politics (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/programming">
+                                        Programming (47)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/python">
+                                        Python (22)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/pythonanywhere">
+                                        PythonAnywhere (11)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/quick-links">
+                                        Quick links (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/rants">
+                                        Rants (4)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/raspberry-pi">
+                                        Raspberry Pi (1)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/resolver-one">
+                                        Resolver One (22)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/resolver-systems">
+                                        Resolver Systems (18)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/robotics">
+                                        Robotics (8)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/space">
+                                        Space (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/talks">
+                                        Talks (3)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/uncategorized">
+                                        Uncategorized (5)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/voip">
+                                        VoIP (2)
+                                    </a>
+                                </li>
+                            
+                                <li>
+                                    <a href="/website-design">
+                                        Website design (4)
+                                    </a>
+                                </li>
+                            
+                        </ul>
+                    </div>
+                </div><div class="links-bar-link dropdown">
+                    <span class="dropdown-header">Blogroll</span>
+                    <div class="dropdown-content">
+                        <ul>
+                            <li><a href="https://www.aychedee.com/">aychedee</a></li>
+                            <li><a href="https://knowing.net/">Knowing.NET</a></li>
+                            <li><a href="http://blog.millenniumhand.co.uk/">Millennium Hand</a></li>
+                            <li><a href="https://blog.pythonanywhere.com/">PythonAnywhere News</a></li>
+                            <li><a href="https://orestis.gr/">Software Deviser</a></li>
+                            <li><a href="https://www.tartley.com/">tartley.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                
+
+    <h2 class="post-header">Fun with network namespaces, part 1</h2>
+
+    <div class="post-subhead">
+        Posted on 13 <a href="/2021/03/">March 2021</a>
+        
+            in
+            
+                <a href="/linux">Linux</a>,
+            
+                <a href="/programming">Programming</a>
+            
+        
+    </div>
+
+    <p>Linux has some amazing kernel features to enable containerization.  Tools like
+<a href="https://www.docker.com/">Docker</a> are built on top of them, and at
+<a href="https://www.pythonanywhere.com/">PythonAnywhere</a> we have built our own
+virtualization system using them.</p>
+
+<p>One part of these systems that I've not spent much time poking into is network
+namespaces.  <a href="https://en.wikipedia.org/wiki/Linux_namespaces">Namespaces</a> are a
+general abstraction that allows you to separate out system resources; for example,
+if a process is in a <em>mount namespace</em>, then it has its own set of mounted disks
+that is separate from those seen by the other processes on a machine -- or if it's in a
+<a href="/2016/04/pam-unshare-a-pam-module-that-switches-into-a-pid-namespace"><em>process namespace</em></a>,
+then it has its own cordoned-off set of processes visible to it (so,
+say, <code>ps auxwf</code> will just show the ones in its namespace).</p>
+
+<p>As you might expect from that, if you put a process into a network namespace, it
+will have its own restricted view of what the networking environment looks like --
+it won't see the machine's main network interface,</p>
+
+<p>This provides certain advantages when it comes to security, but one that I thought
+was interesting is that because two processes inside different namespaces would
+have different networking environments, they could both bind to the same port --
+and then could be accessed from outside via port forwarding.</p>
+
+<p>To put that in more concrete terms: my goal was to be able to start up two Flask
+servers on the same machine, both bound to port 8080 inside their own namespace.
+I wanted to be able to access one of them from outside by hitting port 6000 on
+the machine, and the other by hitting port 6001.</p>
+
+<p>Here is a run through how I got that working; it's a lightly-edited set of my
+"lab notes".</p>
+
+
+    
+        <span id="id_fold"></span>
+        <h3 id="creating-a-network-namespace-and-looking-inside">Creating a network namespace and looking inside</h3>
+
+<p>The first thing to try is just creating a network namespace, called <code>netns1</code>:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip netns add netns1
+</code></pre></div>
+
+<p>Now, you can "go into" the created namespace by using <code>ip netns exec</code> <em>namespace-name</em>,
+so we can run Bash there and then use <code>ip a</code> to see what network interfaces we have
+available:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip netns <span class="nb">exec</span> netns1 /bin/bash
+<span class="gp"># </span>ip a
+<span class="go">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1000</span>
+<span class="go">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span>
+<span class="gp"># </span><span class="nb">exit</span>
+</code></pre></div>
+
+<p>(I'll put the <code>ip netns exec</code> command at the start of all code blocks below if
+the block in question needs to be run inside the namespace, even when it's not
+necessary, so that it's reasonably clear which commands are to be run inside
+and which are not.)</p>
+
+<p>So, we have a new namespace, and when we're inside it, there's only one interface
+available, a basic loopback interface.  We can compare that with what we see with
+the same command outside:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip a
+<span class="go">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span>
+<span class="go">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span>
+<span class="go">    inet 127.0.0.1/8 scope host lo</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">    inet6 ::1/128 scope host</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">2: ens5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 9001 qdisc mq state UP group default qlen 1000</span>
+<span class="go">    link/ether 0a:d6:01:7e:06:5b brd ff:ff:ff:ff:ff:ff</span>
+<span class="go">    inet 10.0.0.173/24 brd 10.0.0.255 scope global dynamic ens5</span>
+<span class="go">       valid_lft 2802sec preferred_lft 2802sec</span>
+<span class="go">    inet6 fe80::8d6:1ff:fe7e:65b/64 scope link</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+</code></pre></div>
+
+<p>There we can see the actual network card attached to the machine, which has the name <code>ens5</code>.</p>
+
+<h3 id="getting-the-loopback-interface-working">Getting the loopback interface working</h3>
+
+<p>You might have noticed that the details shown for the loopback interface inside
+the namespace were much shorter, too -- no IPv4 or IPv6 addresses, for example.
+That's because the interface is down by default.  Let's see if we can fix that:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip netns <span class="nb">exec</span> netns1 /bin/bash
+<span class="gp"># </span>ip a
+<span class="go">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1000</span>
+<span class="go">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span>
+<span class="gp"># </span>ping <span class="m">127</span>.0.0.1
+<span class="go">ping: connect: Network is unreachable</span>
+<span class="gp"># </span>ip link <span class="nb">set</span> dev lo up
+<span class="gp"># </span>ip a
+<span class="go">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span>
+<span class="go">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span>
+<span class="go">    inet 127.0.0.1/8 scope host lo</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">    inet6 ::1/128 scope host</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="gp"># </span>ping <span class="m">127</span>.0.0.1
+<span class="go">PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.</span>
+<span class="go">64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.019 ms</span>
+<span class="go">64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.027 ms</span>
+<span class="go">^C</span>
+<span class="go">--- 127.0.0.1 ping statistics ---</span>
+<span class="go">2 packets transmitted, 2 received, 0% packet loss, time 1022ms</span>
+<span class="go">rtt min/avg/max/mdev = 0.019/0.023/0.027/0.004 ms</span>
+</code></pre></div>
+
+<p>So, we could not ping the loopback when it was down (unsurprisingly) but once we
+used the <code>ip link set dev lo up</code> command, it showed up as configured and was pingable.</p>
+
+<p>Now we have a working loopback interface, but the external network still is down:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip netns <span class="nb">exec</span> netns1 /bin/bash
+<span class="gp"># </span>ping <span class="m">8</span>.8.8.8
+<span class="go">ping: connect: Network is unreachable</span>
+</code></pre></div>
+
+<p>Again, that makes sense.  There's no non-loopback interface, so there's no way
+to send packets to anywhere but the loopback network.</p>
+
+<h3 id="virtual-network-interfaces-connecting-the-namespace">Virtual network interfaces: connecting the namespace</h3>
+
+<p>What we need is some kind of non-loopback network interface inside the namespace.
+However, we can't just put the external interface <code>ens5</code> inside there; an interface
+can only be in one namespace at a time, so if we put that one in there, the external
+machine would lose networking.</p>
+
+<p>What we need to do is create a virtual network interface.  These are created in pairs,
+and are essentially connected to each other.  This command:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip link add veth0 <span class="nb">type</span> veth peer name veth1
+</code></pre></div>
+
+<p>Creates interfaces called <code>veth0</code> and <code>veth1</code>.  Anything sent to <code>veth0</code> will
+appear on <code>veth1</code>, and vice versa.  It's as if they were two separate ethernet
+cards, connected to the same hub (but not to anything else).  Having run that
+command (outside the network namespace) we can list all of our available interfaces:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip a
+<span class="go">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span>
+<span class="go">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span>
+<span class="go">    inet 127.0.0.1/8 scope host lo</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">    inet6 ::1/128 scope host</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">2: ens5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 9001 qdisc mq state UP group default qlen 1000</span>
+<span class="go">    link/ether 0a:d6:01:7e:06:5b brd ff:ff:ff:ff:ff:ff</span>
+<span class="go">    inet 10.0.0.173/24 brd 10.0.0.255 scope global dynamic ens5</span>
+<span class="go">       valid_lft 2375sec preferred_lft 2375sec</span>
+<span class="go">    inet6 fe80::8d6:1ff:fe7e:65b/64 scope link</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">5: veth1@veth0: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span>
+<span class="go">    link/ether ce:d5:74:80:65:08 brd ff:ff:ff:ff:ff:ff</span>
+<span class="go">6: veth0@veth1: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span>
+<span class="go">    link/ether 22:55:4e:34:ce:ba brd ff:ff:ff:ff:ff:ff</span>
+</code></pre></div>
+
+<p>You can see that they're both there, and are currently down.  I read the <code>veth1@veth0</code>
+notation as meaning "virtual interface <code>veth1</code>, which is connected to the virtual
+interface <code>veth0</code>".</p>
+
+<p>We can now move one of them -- <code>veth1</code> -- into the network namespace <code>netns1</code>, which means that we have
+the interface outside connected to the one inside:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip link <span class="nb">set</span> veth1 netns netns1
+</code></pre></div>
+
+<p>Now, from outside, we see this:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip a
+<span class="go">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span>
+<span class="go">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span>
+<span class="go">    inet 127.0.0.1/8 scope host lo</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">    inet6 ::1/128 scope host</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">2: ens5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 9001 qdisc mq state UP group default qlen 1000</span>
+<span class="go">    link/ether 0a:d6:01:7e:06:5b brd ff:ff:ff:ff:ff:ff</span>
+<span class="go">    inet 10.0.0.173/24 brd 10.0.0.255 scope global dynamic ens5</span>
+<span class="go">       valid_lft 2368sec preferred_lft 2368sec</span>
+<span class="go">    inet6 fe80::8d6:1ff:fe7e:65b/64 scope link</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">6: veth0@if5: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span>
+<span class="go">    link/ether 22:55:4e:34:ce:ba brd ff:ff:ff:ff:ff:ff link-netns netns1</span>
+</code></pre></div>
+
+<p><code>veth1</code> has disappeared (and <code>veth0</code> is now <code>@if5</code>, which is interesting -- not sure why,
+though it seems to make some kind of sense given that <code>veth1</code> is now inside another
+namespace).  But anyway, inside, we can see our moved interface:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp">root@giles-devweb1:~# </span>ip netns <span class="nb">exec</span> netns1 /bin/bash
+<span class="gp">root@giles-devweb1:~# </span>ip a
+<span class="go">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span>
+<span class="go">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span>
+<span class="go">    inet 127.0.0.1/8 scope host lo</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">    inet6 ::1/128 scope host</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">5: veth1@if6: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span>
+<span class="go">    link/ether ce:d5:74:80:65:08 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span>
+</code></pre></div>
+
+<p>At this point we have a network interface outside the namespace, which is connected to an interface
+inside.  However, in order to actually use them, we'll need to bring the interfaces
+up and set up routing.  The first step is to bring the outside one up; we'll give
+it the IP address <code>192.168.0.1</code> on the <code>192.168.0.0/24</code> subnet (that is, the network
+covering all addresses from <code>192.168.0.0</code> to <code>192.168.0.255</code>)</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip addr add <span class="m">192</span>.168.0.1/24 dev veth0
+<span class="gp"># </span>ip link <span class="nb">set</span> dev veth0 up
+<span class="gp"># </span>ip a
+<span class="go">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span>
+<span class="go">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span>
+<span class="go">    inet 127.0.0.1/8 scope host lo</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">    inet6 ::1/128 scope host</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">2: ens5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 9001 qdisc mq state UP group default qlen 1000</span>
+<span class="go">    link/ether 0a:d6:01:7e:06:5b brd ff:ff:ff:ff:ff:ff</span>
+<span class="go">    inet 10.0.0.173/24 brd 10.0.0.255 scope global dynamic ens5</span>
+<span class="go">       valid_lft 3567sec preferred_lft 3567sec</span>
+<span class="go">    inet6 fe80::8d6:1ff:fe7e:65b/64 scope link</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">6: veth0@if5: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state LOWERLAYERDOWN group default qlen 1000</span>
+<span class="go">    link/ether 22:55:4e:34:ce:ba brd ff:ff:ff:ff:ff:ff link-netns netns1</span>
+<span class="go">    inet 192.168.0.1/24 scope global veth0</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+</code></pre></div>
+
+<p>So that's all looking good; it reports "no carrier" at the moment, of course, because there's
+nothing at the other end yet.  Let's go into the namespace and sort that out by
+bringing it up on <code>192.168.0.2</code> on the same network:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip netns <span class="nb">exec</span> netns1 /bin/bash
+<span class="gp"># </span>ip addr add <span class="m">192</span>.168.0.2/24 dev veth1
+<span class="gp"># </span>ip link <span class="nb">set</span> dev veth1 up
+<span class="gp"># </span>ip a
+<span class="go">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span>
+<span class="go">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span>
+<span class="go">    inet 127.0.0.1/8 scope host lo</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">    inet6 ::1/128 scope host</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">5: veth1@if6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span>
+<span class="go">    link/ether ce:d5:74:80:65:08 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span>
+<span class="go">    inet 192.168.0.2/24 scope global veth1</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">    inet6 fe80::ccd5:74ff:fe80:6508/64 scope link tentative</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+</code></pre></div>
+
+<p>Now, let's try pinging from inside the namespace to the outside interface:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip netns <span class="nb">exec</span> netns1 /bin/bash
+<span class="gp"># </span>ping <span class="m">192</span>.168.0.1
+<span class="go">PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.</span>
+<span class="go">64 bytes from 192.168.0.1: icmp_seq=1 ttl=64 time=0.069 ms</span>
+<span class="go">64 bytes from 192.168.0.1: icmp_seq=2 ttl=64 time=0.042 ms</span>
+<span class="go">^C</span>
+<span class="go">--- 192.168.0.1 ping statistics ---</span>
+<span class="go">2 packets transmitted, 2 received, 0% packet loss, time 1024ms</span>
+<span class="go">rtt min/avg/max/mdev = 0.042/0.055/0.069/0.013 ms</span>
+</code></pre></div>
+
+<p>And from outside to the inside:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ping <span class="m">192</span>.168.0.2
+<span class="go">PING 192.168.0.2 (192.168.0.2) 56(84) bytes of data.</span>
+<span class="go">64 bytes from 192.168.0.2: icmp_seq=1 ttl=64 time=0.039 ms</span>
+<span class="go">64 bytes from 192.168.0.2: icmp_seq=2 ttl=64 time=0.043 ms</span>
+<span class="go">^C</span>
+<span class="go">--- 192.168.0.2 ping statistics ---</span>
+<span class="go">2 packets transmitted, 2 received, 0% packet loss, time 1018ms</span>
+<span class="go">rtt min/avg/max/mdev = 0.039/0.041/0.043/0.002 ms</span>
+</code></pre></div>
+
+<p>Great!</p>
+
+<p>However, of course, it's still not routed -- from inside the interface, we still can't
+ping Google's DNS server:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip netns <span class="nb">exec</span> netns1 /bin/bash
+<span class="gp"># </span>ping <span class="m">8</span>.8.8.8
+<span class="go">ping: connect: Network is unreachable</span>
+</code></pre></div>
+
+<h3 id="connecting-the-namespace-to-the-outside-world-with-nat">Connecting the namespace to the outside world with NAT</h3>
+
+<p>We need to somehow connect the network defined by our pair of virtual interfaces to
+the one that is accessed via our real hardware network interface, either by setting
+up bridging or NAT.  I'm running this experiment on a machine on AWS, and I'm not
+sure how well that would work with bridging (my guess is, really badly), so let's
+go with NAT.</p>
+
+<p>First we tell the network stack inside the namespace to route everything via the machine
+at the other end of the connection defined by its internal <code>veth1</code> IP address:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip netns <span class="nb">exec</span> netns1 /bin/bash
+<span class="gp"># </span>ip route add default via <span class="m">192</span>.168.0.1
+<span class="gp"># </span>ping <span class="m">8</span>.8.8.8
+<span class="go">PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.</span>
+<span class="go">^C</span>
+<span class="go">--- 8.8.8.8 ping statistics ---</span>
+<span class="go">3 packets transmitted, 0 received, 100% packet loss, time 2028ms</span>
+</code></pre></div>
+
+<p>Note that the address we specify in the <code>ip route add default</code> command is the one for the end of the virtual
+interface pair that is <em>outside</em> the process namespace, which makes sense -- we're
+saying "this other machine is our router".   The first time I tried this I put the
+address of the interface inside the namespace there, which obviously didn't work,
+as it was trying to send packets to itself for routing.</p>
+
+<p>So now the networking stack inside the namespace knows where to route stuff, which
+is why it no longer says "Network is unreachable", but
+of course there's nothing on the other side to send it onwards, so our ping packets
+are getting dropped on the floor.  We need to use
+<code>iptables</code> to set up that side of things outside the namespace.</p>
+
+<p>The first step is to tell the host that it can route stuff:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>cat /proc/sys/net/ipv4/ip_forward
+<span class="go">0</span>
+<span class="gp"># </span><span class="nb">echo</span> <span class="m">1</span> &gt; /proc/sys/net/ipv4/ip_forward
+<span class="gp"># </span>cat /proc/sys/net/ipv4/ip_forward
+<span class="go">1</span>
+</code></pre></div>
+
+<p>Now that we're forwarding packets, we want to make sure that we're not just forwarding
+them willy-nilly around the network.  If we check the current rules in the FORWARD
+chain (in the default "filter" table):</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>iptables -L FORWARD
+<span class="go">Chain FORWARD (policy ACCEPT)</span>
+<span class="go">target     prot opt source               destination</span>
+<span class="gp">#</span>
+</code></pre></div>
+
+<p>We see that the default is ACCEPT, so we'll change that to DROP:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>iptables -P FORWARD DROP
+<span class="gp"># </span>iptables -L FORWARD
+<span class="go">Chain FORWARD (policy DROP)</span>
+<span class="go">target     prot opt source               destination</span>
+<span class="gp">#</span>
+</code></pre></div>
+
+<p>OK, now we want to make some changes to the <code>nat</code> iptable so that we have routing.
+Let's see what we have first:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>iptables -t nat -L
+<span class="go">Chain PREROUTING (policy ACCEPT)</span>
+<span class="go">target     prot opt source               destination</span>
+<span class="go">DOCKER     all  --  anywhere             anywhere             ADDRTYPE match dst-type LOCAL</span>
+
+<span class="go">Chain INPUT (policy ACCEPT)</span>
+<span class="go">target     prot opt source               destination</span>
+
+<span class="go">Chain OUTPUT (policy ACCEPT)</span>
+<span class="go">target     prot opt source               destination</span>
+<span class="go">DOCKER     all  --  anywhere            !localhost/8          ADDRTYPE match dst-type LOCAL</span>
+
+<span class="go">Chain POSTROUTING (policy ACCEPT)</span>
+<span class="go">target     prot opt source               destination</span>
+<span class="go">MASQUERADE  all  --  ip-172-17-0-0.ec2.internal/16  anywhere</span>
+
+<span class="go">Chain DOCKER (2 references)</span>
+<span class="go">target     prot opt source               destination</span>
+<span class="go">RETURN     all  --  anywhere             anywhere</span>
+<span class="gp">#</span>
+</code></pre></div>
+
+<p>I have Docker installed on the machine already, and it's got some of its own NAT-based
+routing configured there.  I don't think there's any harm in leaving that there;
+it's on a different subnet to the one I chose for my own stuff.</p>
+
+<p>So, firstly, we'll enable masquerading from the <code>192.168.0.*</code> network onto our
+main ethernet interface <code>ens5</code>:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>iptables -t nat -A POSTROUTING -s <span class="m">192</span>.168.0.0/255.255.255.0 -o ens5 -j MASQUERADE
+</code></pre></div>
+
+<p>Now we'll say that we'll forward stuff that comes in on <code>ens5</code> can be forwarded
+to our <code>veth0</code> interface, which you'll remember is the end of the virtual network
+pair that is outside the namespace:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>iptables -A FORWARD -i ens5 -o veth0 -j ACCEPT
+</code></pre></div>
+
+<p>...and then the routing in the other direction:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>iptables -A FORWARD -o ens5 -i veth0 -j ACCEPT
+</code></pre></div>
+
+<p>Now, let's see what happens if we try to ping from inside the namespace</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip netns <span class="nb">exec</span> netns1 /bin/bash
+<span class="gp"># </span>ping <span class="m">8</span>.8.8.8
+<span class="go">PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.</span>
+<span class="go">64 bytes from 8.8.8.8: icmp_seq=1 ttl=112 time=0.604 ms</span>
+<span class="go">64 bytes from 8.8.8.8: icmp_seq=2 ttl=112 time=0.609 ms</span>
+<span class="go">^C</span>
+<span class="go">--- 8.8.8.8 ping statistics ---</span>
+<span class="go">2 packets transmitted, 2 received, 0% packet loss, time 1003ms</span>
+<span class="go">rtt min/avg/max/mdev = 0.604/0.606/0.609/0.002 ms</span>
+</code></pre></div>
+
+<p>w00t!</p>
+
+<h3 id="running-a-server-with-port-forwarding">Running a server with port-forwarding</h3>
+
+<p>Right, now we have a network namespace where we can operate as a network client --
+processes running inside it can access the external Internet.</p>
+
+<p>However, we don't have things working the other way around; we cannot run a server
+inside the namespace and access it from outside.  For that, we need to configure
+port-forwarding.  I'm not perfectly clear in my own mind exactly how this all works;
+take my explanations below with a cellar of salt...</p>
+
+<p>We use the "<a href="http://linux-ip.net/html/nat-dnat.html">Destination NAT</a>"
+chain in iptables:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>iptables -t nat -A PREROUTING -p tcp -i ens5 --dport <span class="m">6000</span> -j DNAT --to-destination <span class="m">192</span>.168.0.2:8080
+</code></pre></div>
+
+<p>Or, in other words, if something comes in for port <code>6000</code> then we should sent it on
+to port 8080 on the interface at <code>192.168.0.2</code> (which is the end of the virtual
+interface pair that is inside the namespace).</p>
+
+<p>Next, we say that we're happy to forward stuff back and forth over new, established and related (not
+sure what that last one is) connections to the IP of our namespaced interface:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>iptables -A FORWARD -p tcp -d <span class="m">192</span>.168.0.2 --dport <span class="m">8080</span> -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+</code></pre></div>
+
+<p>So, with that set up, we should be able to run a server inside the namespace on
+port 8080.  Using this Python code in the file <code>server.py</code></p>
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello from Flask!</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8080</span><span class="p">)</span>
+</code></pre></div>
+
+<p>...then we run it:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip netns <span class="nb">exec</span> netns1 /bin/bash
+<span class="gp"># </span>python3.7 server.py
+<span class="go"> * Serving Flask app &quot;server&quot; (lazy loading)</span>
+<span class="go"> * Environment: production</span>
+<span class="go">   WARNING: This is a development server. Do not use it in a production deployment.</span>
+<span class="go">   Use a production WSGI server instead.</span>
+<span class="go"> * Debug mode: off</span>
+<span class="go"> * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)</span>
+</code></pre></div>
+
+<p>...and from a completely separate machine on the same network as the one where
+we're running the server, we <code>curl</code> it using the machine's external IP address,
+on port <code>6000</code>:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>curl http://10.0.0.233:6000/
+<span class="go">Hello from Flask!</span>
+<span class="gp">$</span>
+</code></pre></div>
+
+<p>Yay!  We've successfully got a Flask server running inside a network namespace,
+with routing from the external network.</p>
+
+<h3 id="running-a-second-server-in-a-separate-namespace">Running a second server in a separate namespace</h3>
+
+<p>Now we can set up the second server in its own namespace.  Leaving the existing
+Flask running in the session where we started it just now, we can run through
+all of the steps above at speed in another:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp"># </span>ip netns add netns2
+<span class="gp"># </span>ip link add veth2 <span class="nb">type</span> veth peer name veth3
+<span class="gp"># </span>ip link <span class="nb">set</span> veth3 netns netns2
+<span class="gp"># </span>ip addr add <span class="m">192</span>.168.1.1/24 dev veth2
+<span class="gp"># </span>ip link <span class="nb">set</span> dev veth2 up
+<span class="gp"># </span>iptables -t nat -A POSTROUTING -s <span class="m">192</span>.168.1.0/255.255.255.0 -o ens5 -j MASQUERADE
+<span class="gp"># </span>iptables -A FORWARD -i ens5 -o veth2 -j ACCEPT
+<span class="gp"># </span>iptables -A FORWARD -o ens5 -i veth2 -j ACCEPT
+<span class="gp"># </span>iptables -t nat -A PREROUTING -p tcp -i ens5 --dport <span class="m">6001</span> -j DNAT --to-destination <span class="m">192</span>.168.1.2:8080
+<span class="gp"># </span>iptables -A FORWARD -p tcp -d <span class="m">192</span>.168.1.2 --dport <span class="m">8080</span> -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+
+<span class="gp"># </span>ip netns <span class="nb">exec</span> netns2 /bin/bash
+<span class="gp"># </span>ip link <span class="nb">set</span> dev lo up
+<span class="gp"># </span>ip addr add <span class="m">192</span>.168.1.2/24 dev veth3
+<span class="gp"># </span>ip link <span class="nb">set</span> dev veth3 up
+<span class="gp"># </span>ip route add default via <span class="m">192</span>.168.1.1
+<span class="gp"># </span>python3.7 server2.py
+<span class="go"> * Serving Flask app &quot;server2&quot; (lazy loading)</span>
+<span class="go"> * Environment: production</span>
+<span class="go">   WARNING: This is a development server. Do not use it in a production deployment.</span>
+<span class="go">   Use a production WSGI server instead.</span>
+<span class="go"> * Debug mode: off</span>
+<span class="go"> * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)</span>
+</code></pre></div>
+
+<p>...where <code>server2.py</code> is the same Python code, modified to return a slightly different
+string.  Now, from our other server:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>curl http://10.0.0.233:6000/
+<span class="go">Hello from Flask!</span>
+<span class="gp">$ </span>curl http://10.0.0.233:6001/
+<span class="go">Hello from the other Flask!</span>
+<span class="gp">$</span>
+</code></pre></div>
+
+<p>And we're done :-)  We have two separate servers on the same machine, both of
+which are bound to port <code>8080</code> inside their own network namespace, with routing
+set up so they can connect out to the external network, and port-forwarding
+so that they can be accessed from outside.</p>
+
+<h3 id="summing-up">Summing up</h3>
+
+<p>This was easier than I thought it was going to be; the only part of the networking
+that is still fuzzy in my own mind is the port-forwarding, and I think I just
+need to read up a bit on exactly how that works.</p>
+
+<p>It was made a lot easier by various other tutorials on network namespaces that I
+found around the Internet.  Some shout-outs:</p>
+
+<ul>
+<li>I felt <a href="https://lwn.net/Articles/580893/">this LWN post</a> summarised the basics really well.</li>
+<li><a href="https://itnext.io/create-your-own-network-namespace-90aaebc745d">Ivan Sim's article on itnext.io</a> had some good hints and tips.</li>
+<li>As did <a href="https://blogs.igalia.com/dpino/2016/04/10/network-namespaces/">Diego Pino Garc&iacute;a's at Unweaving the Web</a>.</li>
+<li>...and <a href="https://blog.scottlowe.org/2013/09/04/introducing-linux-network-namespaces/">Scott Lowes's blog was also useful</a>.</li>
+<li>My port-forwarding setup was a good example of <a href="https://serverfault.com/questions/140622/how-can-i-port-forward-with-iptables">full-stack-overflow programming</a>.</li>
+<li>The <a href="https://linux.die.net/man/8/iptables"><code>iptables</code> man page</a> clarified a bunch of stuff for me.</li>
+</ul>
+
+<p>Many thanks to all of them!</p>
+
+    
+
+    <div class="older-newer-footer">
+        
+            <a href="/2021/02/comments-working">&laquo; Comments are back!</a>
+        
+
+        
+            <a href="/2021/11/covid-again">COVID-19 breakthrough / re-infection: a personal tale &raquo;</a>
+        
+    </div>
+
+    <div id="comments"></div>
+
+
+            </div>
+
+            <div class="footer">
+                Copyright (c) 2006-2022 by Giles Thomas.
+                This work is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            </div>
+        </div>
+
+    </body>
+
+</html>

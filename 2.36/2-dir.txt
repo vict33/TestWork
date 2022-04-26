@@ -1,0 +1,16 @@
+ls -la
+-rw-r--r-- 1 victor 197121     1649 Apr 24 15:55  1-Download.txt
+-rw-r--r-- 1 victor 197121     1091 Apr 24 15:52  1-Install-PortableGit.txt
+-rw-r--r-- 1 victor 197121      806 Apr 24 16:06 '1-Upcoming breaking changes.txt'
+-rw-r--r-- 1 victor 197121      199 Apr 24 16:36 '2-Using SCM in VS Code.txt'
+-rw-r--r-- 1 victor 197121     1089 Apr 24 16:13  2-dir.txt
+-rwxr-xr-x 1 victor 197121 49488144 Apr 24 14:32  Git-2.36.0-32-bit.exe*
+-rwxr-xr-x 1 victor 197121 49371696 Apr 24 15:54  Git-2.36.0-64-bit.exe*
+-rw-r--r-- 1 victor 197121      562 Apr 24 16:00  Git-2.36.0.sha256
+-rw-r--r-- 1 victor 197121 26250554 Apr 24 15:57  MinGit-2.36.0-32-bit.zip
+-rw-r--r-- 1 victor 197121 26222766 Apr 24 15:58  MinGit-2.36.0-64-bit.zip
+-rwxr-xr-x 1 victor 197121 45949464 Apr 24 14:32  PortableGit-2.36.0-32-bit.7z.exe*
+-rwxr-xr-x 1 victor 197121 45299024 Apr 24 15:56  PortableGit-2.36.0-64-bit.7z.exe*
+-rw-r--r-- 1 victor 197121 19940658 Apr 24 14:48 'ProGit, 2th edition, 20220212-RU.pdf'
+-rw-r--r-- 1 victor 197121 18672490 Apr 24 14:46 'ProGit, 2th edition, 20220405-EN.pdf'
+-rw-r--r-- 1 victor 197121 12650610 Apr 24 15:57  git-2.36.0.windows.1.zip

@@ -1,0 +1,9 @@
+Using Version Control in VS Code
+https://code.visualstudio.com/docs/editor/versioncontrol
+
+
+settings.json
+{
+    "git.enabled": true,
+    "git.path": "c:\\Java\\git-2.36_x32\\bin\\git.exe"
+}

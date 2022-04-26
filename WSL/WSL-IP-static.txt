@@ -1,0 +1,53 @@
+wsl --shutdown
+# assign statis ip address
+wsl -d Ubuntu -u root bash -c "sudo ip a flush dev eth0; sudo ip r del default; ip addr add 192.168.1.50/24 broadcast 192.168.1.255 dev eth0; sudo ip r add default via 192.168.1.1"
+
+# update resolv.conf
+wsl -d Ubuntu -u root bash -c 'echo -e "options single-request\nnameserver 8.8.8.8\nnameserver 8.8.4.4" ^> /etc/resolv.conf'
+
+
+
+
+
+#!/bin/bash
+
+# Fix network adapter in WSL
+sudo ip addr del $(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | head -n 1) dev eth0
+sudo ip addr add 172.21.199.208/20 broadcast 172.21.207.255 dev eth0
+sudo ip route add 0.0.0.0/0 via 172.21.192.1 dev eth0
+
+# Fix network adapter configuration in windows
+powershell.exe Start-Process -Verb runas powershell.exe -ArgumentList \'$(echo '-noexit -c Get-NetAdapter \"vEthernet (WSL)\" | Get-NetIPAddress | Remove-NetIPAddress -Confirm:$False; New-NetIPAddress -IPAddress 172.21.192.1 -PrefixLength 20 -InterfaceAlias \"vEthernet (WSL)\"; Get-NetNat | ? Name -Eq WSLNat | Remove-NetNat -Confirm:$False; New-NetNat -Name WSLNat -InternalIPInterfaceAddressPrefix 172.21.192.0/20;')\'
+
+# SUPER OPTIONAL: Update display (may be different on your machine!)
+export DISPLAY=$(ip route | awk '/^default/{print $3; exit}'):0
+
+
+
+
+
+
+1. create any executable script on wsl2
+
+#!/bin/bash
+
+/sbin/ip addr add 192.168.101.161/24 broadcast 192.168.101.255 dev eth0 label eth0:1
+/mnt/c/Windows/System32/netsh.exe interface ipv4 add address "vEthernet (WSL)" 192.168.101.162 255.255.255.0
+
+2. edit crontab and add your script
+
+@reboot /path/to/the/script
+
+3. add to /etc/sudoers
+
+%sudo ALL=NOPASSWD: /etc/init.d/cron *
+
+4. on windows side create vbs script
+
+Set oShell = CreateObject ("Wscript.Shell") 
+
+Dim strArgs
+strArgs = "C:\Windows\System32\wsl.exe -d Debian sudo /etc/init.d/cron start"
+oShell.Run strArgs, 0, false
+
+5. put this script to windows autostart

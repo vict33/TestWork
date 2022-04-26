@@ -1,0 +1,13 @@
+AlpineWSL
+https://github.com/yuk7/AlpineWSL
+https://github.com/yuk7/AlpineWSL/releases
+
+Alpine Linux on WSL (Windows 10 1803 or later) based on wsldl
+
+
+wsl --import RegName .  ..\alpine.tar.gz
+##wsl --terminate RegName ##--??
+wsl --unregister RegName
+wsl -d RegName
+
+apk add openssh-client

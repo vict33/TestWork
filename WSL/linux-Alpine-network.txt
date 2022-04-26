@@ -1,0 +1,58 @@
+Content of /etc/network in Alpine Linux image
+https://unix.stackexchange.com/questions/602646/content-of-etc-network-in-alpine-linux-image
+
+Folders:
+/etc/network/if-down.d/
+/etc/network/if-post-down.d/
+/etc/network/if-post-up.d/
+/etc/network/if-pre-down.d/
+/etc/network/if-pre-up.d/
+/etc/network/if-up.d/
+
+Those folders are hooks for ifupdown, there are a lot ifupdown implementation,
+but alpine default one is busybox's, you can check the source here networking/ifupdown.c.
+
+busybox only handle auto interface, support these builtin types.
+
+
+
+
+File - Package - Branch - Repository - Architecture
+https://pkgs.alpinelinux.org/contents?file=&path=%2Fetc%2Fnetwork%2F*&name=&branch=v3.15&arch=x86_64
+
+File=/etc/network/*  Package=v3.15  Repo=x86_64
+###############################################
+/etc/network/if-down.d/static-routing
+/etc/network/if-up.d/static-routing
+https://git.alpinelinux.org/aports/tree/main/static-routing/static-routing
+
+
+
+
+#!/bin/sh
+
+# Static routing configuration script
+# Copyright (c) 2016-2020 Kaarle Ritvanen
+
+if [ $MODE = start ]; then
+    ACTION=add
+elif [ $MODE = stop ]; then
+    ACTION=del
+else
+    exit 1
+fi
+
+configure() {
+    local class=$1
+    shift
+
+    local entry
+    IFS=,
+    for entry in $(eval "echo \"\$IF_$(echo $class | tr a-z A-Z)\""); do
+	IFS=" "
+	ip $class $ACTION $entry $*
+    done
+}
+
+configure route src ${IF_ADDRESS%/*} dev $IFACE
+configure rule
