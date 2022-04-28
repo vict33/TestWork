@@ -1,0 +1,17 @@
+Visual Studio Code Remote - WSL
+
+The Remote - WSL extension lets you use VS Code on Windows to build Linux applications that run on the Windows Subsystem for Linux (WSL). You get all the productivity of Windows while developing with Linux-based tools, runtimes, and utilities.
+
+Remote - WSL lets you use VS Code in WSL just as you would from Windows.
+
+
+
+
+Visual Studio Code Remote - SSH
+
+The Remote - SSH extension lets you use any remote machine with a SSH server as your development environment. This can greatly simplify development and troubleshooting in a wide variety of situations. You can:
+
+• Develop on the same operating system you deploy to or use larger, faster, or more specialized hardware than your local machine.
+• Quickly swap between different, remote development environments and safely make updates without worrying about impacting your local machine.
+• Access an existing development environment from multiple machines or locations.
+• Debug an application running somewhere else such as a customer site or in the cloud.
