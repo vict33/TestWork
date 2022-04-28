@@ -1,0 +1,60 @@
+Windows Terminal
+Welcome to the Windows Terminal, Console and Command-Line repo
+https://github.com/microsoft/terminal
+
+
+Releases page
+https://github.com/microsoft/terminal/releases
+
+
+Windows Terminal v1.12.1098 - Latest
+= Assets 6 =
+Microsoft.WindowsTerminal_Win10_1.12.10982.0_8wekyb3d8bbwe.msixbundle
+Microsoft.WindowsTerminal_Win10_1.12.10982.0_8wekyb3d8bbwe.msixbundle_Windows10_PreinstallKit.zip
+Microsoft.WindowsTerminal_Win11_1.12.10983.0_8wekyb3d8bbwe.msixbundle
+Microsoft.WindowsTerminal_Win11_1.12.10983.0_8wekyb3d8bbwe.msixbundle_Windows10_PreinstallKit.zip
+Source code (zip)
+Source code (tar.gz) 
+
+
+
+
+Installing and running Windows Terminal
+Note: Windows Terminal requires Windows 10 2004 (build 19041) or later
+
+Microsoft Store [Recommended]
+Install the Windows Terminal from the Microsoft Store. This allows you to always be on the latest version when we release new builds with automatic upgrades.
+
+
+Other install methods
+
+Via GitHub
+For users who are unable to install Windows Terminal from the Microsoft Store, released builds can be manually downloaded from this repository's Releases page.
+
+Via Windows Package Manager CLI (aka winget)
+winget users can download and install the latest Terminal release by installing the Microsoft.WindowsTerminal package:
+winget install --id=Microsoft.WindowsTerminal -e
+
+
+
+
+Terminal & Console Overview
+Please take a few minutes to review the overview below before diving into the code:
+
+
+•Windows Terminal
+
+Windows Terminal is a new, modern, feature-rich, productive terminal application for command-line users. It includes many of the features most frequently requested by the Windows command-line community including support for tabs, rich text, globalization, configurability, theming & styling, and more.
+
+The Terminal will also need to meet our goals and measures to ensure it remains fast and efficient, and doesn't consume vast amounts of memory or power.
+
+
+•The Windows Console Host
+
+The Windows Console host, conhost.exe, is Windows' original command-line user experience. It also hosts Windows' command-line infrastructure and the Windows Console API server, input engine, rendering engine, user preferences, etc. The console host code in this repository is the actual source from which the conhost.exe in Windows itself is built.
+
+Since taking ownership of the Windows command-line in 2014, the team added several new features to the Console, including background transparency, line-based selection, support for ANSI / Virtual Terminal sequences, 24-bit color, a Pseudoconsole ("ConPTY"), and more.
+
+However, because Windows Console's primary goal is to maintain backward compatibility, we have been unable to add many of the features the community (and the team) have been wanting for the last several years including tabs, unicode text, and emoji.
+
+These limitations led us to create the new Windows Terminal.
